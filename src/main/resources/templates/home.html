@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Application</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+html,body{
+  display: grid;
+  height: 100%;
+  width: 100%;
+  place-items: center;
+  background: -webkit-linear-gradient(left, #a445b2, #fa4299);
+}
+::selection{
+  background: #fa4299;
+  color: #fff;
+{
+}
+    </style>
+</head>
+<body>
+<h3 th:if="${user != null}">
+    <span th:text="${'Current user: ' + applicationUser.username }"></span>
+    <span th:text="${'First Name: ' + applicationUser.firstName }"></span>
+    <span th:text="${'Last Name: ' + applicationUser.lastName }"></span>
+    <span th:text="${'Date of Birth: ' + applicationUser.dateOfBirth }"></span>
+    <span th:text="${'Bio : ' + applicationUser.bio }"></span>
+</h3>
+<h1>Welcome to Application</h1>
+
+<a th:if="!${applicationUser}" href="/login">Log In</a>
+<a th:if="!${applicationUser}" href="/signUp">Sign Up</a>
+<a th:if="${applicationUser}" href="/logout">Log Out</a>
+</body>
+</html>
