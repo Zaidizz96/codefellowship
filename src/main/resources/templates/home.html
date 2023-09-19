@@ -7,6 +7,29 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Application</title>
     <style>
+h3 {
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+/* Style the spans within the h3 */
+h3 span {
+    display: block;
+    margin: 5px 0;
+    font-size: 16px;
+}
+h3 span::before {
+    content: attr(th:text);
+    font-weight: bold;
+    color: #333;
+}
+h3 span::after {
+    content: attr(th:text); /* Display the content of th:text as user data */
+    font-weight: normal; /* Remove bold style for user data */
+    color: #666; /* Set user data text color */
+}
+
         @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
 *{
   margin: 0;
@@ -29,17 +52,18 @@ html,body{
     </style>
 </head>
 <body>
-<h3 th:if="${user != null}">
+<h1>Welcome to Application</h1>
+<h3 th:if="${applicationUser != null}">
     <span th:text="${'Current user: ' + applicationUser.username }"></span>
     <span th:text="${'First Name: ' + applicationUser.firstName }"></span>
     <span th:text="${'Last Name: ' + applicationUser.lastName }"></span>
     <span th:text="${'Date of Birth: ' + applicationUser.dateOfBirth }"></span>
     <span th:text="${'Bio : ' + applicationUser.bio }"></span>
 </h3>
-<h1>Welcome to Application</h1>
+
 
 <a th:if="!${applicationUser}" href="/login">Log In</a>
-<a th:if="!${applicationUser}" href="/signUp">Sign Up</a>
-<a th:if="${applicationUser}" href="/logout">Log Out</a>
+<a th:if="!${applicationUser}" href="/signup">Sign Up</a>
+<a th:if="${applicationUser}" href="/perform_logout">Log Out</a>
 </body>
 </html>

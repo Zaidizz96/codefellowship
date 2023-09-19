@@ -1,10 +1,10 @@
-<!DOCTYPE html>
-<!-- Created By CodingNepal -->
-<html lang="en" dir="ltr">
+<!doctype html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Login and Registration Form in HTML | CodingNepal</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <style>
     @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
 *{
@@ -202,19 +202,19 @@ form .btn input[type="submit"]{
   </div>
   <div class="form-container">
     <div class="form-inner">
-      <form action="/login" class="login" >
+      <form action="/perform_login" method="POST" class="login" >
         <div class="field">
-          <input type="text" name="username" placeholder="UserName" required>
+          <input type="text" name="username" id="username" placeholder="UserName"  required />
         </div>
         <div class="field">
-          <input type="password" name="password" placeholder="Password" required>
+          <input type="password" name="password" id="password"  placeholder="Password" required />
         </div>
         <div class="field btn">
           <div class="btn-layer"></div>
-          <input type="submit" value="Login">
+          <input type="submit" value="submit">
         </div>
         <div class="signup-link">
-          Not a member? <a href="/signUp">Signup now</a>
+          Not a member? <a href="/signup">Signup now</a>
         </div>
       </form>
     </div>
