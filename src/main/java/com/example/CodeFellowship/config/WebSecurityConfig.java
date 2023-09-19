@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -39,7 +40,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .loginPage("/login")
-                .permitAll()
                 .loginProcessingUrl("/perform_login")
                 .defaultSuccessUrl("/", true)
                 .failureUrl("/login?error=true") // Update the failure URL
@@ -47,6 +47,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 .logoutUrl("/perform_logout")
                 .deleteCookies("JSESSIONID");
+    }
+    public void configure(WebSecurity web) {
+        web.ignoring()
+                .antMatchers("/bower_components/**", "/dist/**", "/plugins/**"); //write your resource directory name
     }
 
     @Override
