@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 public class ApplicationUser implements UserDetails {
@@ -19,6 +20,9 @@ public class ApplicationUser implements UserDetails {
     private String lastName;
     private LocalDate dateOfBirth;
     private String bio;
+
+    @OneToMany(mappedBy = "applicationUser" , cascade = CascadeType.ALL)
+    private List<Post> applicationUserList;
 
     public ApplicationUser() {
     }
@@ -109,4 +113,7 @@ public class ApplicationUser implements UserDetails {
         this.bio = bio;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 }
