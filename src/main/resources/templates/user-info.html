@@ -31,7 +31,7 @@
 
         /* User info styles */
         h3 {
-            background-color: #f0f0f0;
+            background-color: #d46f96;
             padding: 10px;
             border-radius: 5px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -49,13 +49,13 @@
         h3 span::before {
             content: attr(th:text);
             font-weight: bold;
-            color: #333;
+            color: black;
         }
 
         h3 span::after {
             content: attr(th:text);
             font-weight: normal;
-            color: #666;
+            color: black;
         }
 
         /* Post list styles */
@@ -91,22 +91,18 @@
 </head>
 <body>
 <h1>The user information</h1>
-<h3 th:if="${applicationUser != null}">
-    <span th:text="${'Current user: ' + applicationUser.username }"></span>
-    <span th:text="${'First Name: ' + applicationUser.firstName }"></span>
-    <span th:text="${'Last Name: ' + applicationUser.lastName }"></span>
-    <span th:text="${'Date of Birth: ' + applicationUser.dateOfBirth }"></span>
-    <span th:text="${'Bio : ' + applicationUser.bio }"></span>
-</h3>
+
+<!-- Include user-info-fragment for displaying user information -->
+<div th:include="fragments/user-info-fragment :: user-info"></div>
+
 <h1>Post List</h1>
 <ul>
-    <li th:each="post : ${posts}">
-        <p th:text="${post.body}"></p>
-    </li>
+    <!-- Include post fragments within a loop -->
+    <li th:each="post : ${posts}" th:include="fragments/post-fragment :: post"></li>
 </ul>
-<a th:if="${applicationUser}" th:href="@{/user/{id}(id=${applicationUser.id})}" class="button">Edit</a>
-<a th:if="${applicationUser}" th:href="@{/addNew-Post/{id}(id=${applicationUser.id})}" class="button">Add Post</a>
 
+<a th:if="${applicationUser}" th:href="@{/user/{id}(id=${applicationUser.id})}" class="button">Edit</a>
+<a th:if="${applicationUser}" th:href="@{/addNew-Post}" class="button">Add Post</a>
 <a th:if="${applicationUser}" href="/perform_logout" class="button">Log Out</a>
 </body>
 </html>

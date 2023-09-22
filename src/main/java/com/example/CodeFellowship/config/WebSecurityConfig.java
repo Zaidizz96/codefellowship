@@ -48,10 +48,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutUrl("/perform_logout")
                 .deleteCookies("JSESSIONID");
     }
-    public void configure(WebSecurity web) {
-        web.ignoring()
-                .antMatchers("/bower_components/**", "/dist/**", "/plugins/**"); //write your resource directory name
-    }
+//    public void configure(WebSecurity web) {
+//        web.ignoring()
+//                .antMatchers("/bower_components/**", "/dist/**", "/plugins/**"); //write your resource directory name
+//    }
 
     @Override
     @Bean

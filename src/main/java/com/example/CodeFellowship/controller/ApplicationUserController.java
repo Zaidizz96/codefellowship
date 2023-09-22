@@ -1,9 +1,11 @@
 package com.example.CodeFellowship.controller;
 
 import com.example.CodeFellowship.models.ApplicationUser;
+import com.example.CodeFellowship.models.Post;
 import com.example.CodeFellowship.repositories.ApplicationUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -16,7 +18,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -42,6 +44,10 @@ public class ApplicationUserController {
         return "signup.html";
     }
 
+    @GetMapping("/")
+    public String getHomePage(Principal p, Model m) {
+        return "home.html";
+    }
 
     @PostMapping("/signup")
     public RedirectView createUser(String username, String password, String firstName,
@@ -67,19 +73,15 @@ public class ApplicationUserController {
         return new RedirectView("/");
     }
 
-
-    @GetMapping("/")
-    public String getHomePage(Principal p, Model m) {
-
-        return "home.html";
-    }
-
     @GetMapping("/myprofile")
-    public String getUserProfile(Model model, Principal p) {
+    public String getUserProfile(Model model, Principal p)  {
+
         if (p != null) {
             String username = p.getName();
             ApplicationUser applicationUser = applicationUserRepository.findByUsername(username);
+            List<Post> posts = applicationUser.getApplicationUserList();
             model.addAttribute("applicationUser", applicationUser);
+            model.addAttribute("posts" , posts);
         }
         return "user-info.html";
     }
@@ -94,11 +96,15 @@ public class ApplicationUserController {
 
     @PostMapping("/users")
     public RedirectView editUserInfo(@ModelAttribute("user") ApplicationUser applicationUser ,
-                                     Principal p){
+                                     Principal p , RedirectAttributes redirectAttributes){
         if ((p != null) &&
                 (p.getName().equals(applicationUser.getUsername()))) {
             applicationUserRepository.save(applicationUser);
+        }else {
+            redirectAttributes.addFlashAttribute("errorMessage" , "you cant edit another user information");
+            return new RedirectView("/user/" +applicationUser.getId());
         }
+
         return new RedirectView("/myprofile");
     }
 
@@ -108,6 +114,12 @@ public class ApplicationUserController {
             request.login(username, password);
         } catch (ServletException e) {
             e.printStackTrace();
+        }
+    }
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    public class ResourceNotFoundException extends RuntimeException{
+        ResourceNotFoundException(String message){
+            super(message);
         }
     }
 }

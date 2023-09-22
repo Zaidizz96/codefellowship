@@ -24,6 +24,8 @@ CodeFellowship is an application allows users to create accounts, log in, and co
 - Automatic login for registered users.
 - Display of the user's username when logged in.
 - Logout functionality.
+- ability of the authenticated user to create thiere own posts , in addition to ability to edit theire own user information .
+- any 404 not found error will be successfully appear to the user 
 - Stylish and attractive design.
 - Use of templates for rendering pages.
 
@@ -53,3 +55,6 @@ CodeFellowship is an application allows users to create accounts, log in, and co
 4. after this you will be redirected to the home page with your information .
 5. if you visit the sign another time , you can login to the page .
 6. if you click `log out` you cant reach any page unless you login again
+7. if you logged in to the page , your user information and your previously added posts from you will appear in you profile page.
+8. you can add your posts and edit your user information
+8. do not try to edit other user information , because that is will cause error.
