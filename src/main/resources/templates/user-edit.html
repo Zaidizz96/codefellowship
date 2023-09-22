@@ -163,25 +163,27 @@ input[type="submit"]:hover {
     </div>
     <div class="form-container">
         <div class="form-inner">
+<!--            <P th:if="${errorMessage}"  th:text="'Error: ' + ${errorMessage}"></P>-->
+            <div th:replace="/fragments/error-fragment :: dino-error"></div>
             <form th:action="@{/users}" th:object="${applicationUser}" method="post">
                 <fieldset>
                     <input type="hidden" id="userId" th:field="*{id}">
                     <input type="hidden" th:field="*{password}">
                     <legend>Edit Your Information</legend>
                     <label>User name</label>
-                    <input type="text"  th:field ="*{username}" th:disabled="${!username.equals(applicationUser.username)}" />
+                    <input type="text"  th:field ="*{username}"  />
                     </br>
                     <label>First Name</label>
-                    <input type="text" th:field ="*{firstName}" th:disabled="${!username.equals(applicationUser.username)}" />
+                    <input type="text" th:field ="*{firstName}" />
                     </br>
                     <label>Last Name</label>
-                    <input type="text" th:field ="*{lastName}" th:disabled="${!username.equals(applicationUser.username)}" />
+                    <input type="text" th:field ="*{lastName}"  />
                     </br>
                     <label>Date Of Birth</label>
-                    <input type="text" th:field ="*{dateOfBirth}" th:disabled="${!username.equals(applicationUser.username)}" />
+                    <input type="text" th:field ="*{dateOfBirth}" />
                     </br>
                     <label>Bio</label>
-                    <input type="text" th:field ="*{bio}"  th:disabled="${!username.equals(applicationUser.username)}"/>
+                    <input type="text" th:field ="*{bio}"  />
                     </br>
                     <input type="submit" value="Edit User">
                 </fieldset>

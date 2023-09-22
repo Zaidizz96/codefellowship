@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en" xmlns:th="">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+<!-- fragments/post-fragment.html -->
+<!-- fragments/post-fragment.html -->
+<div th:fragment="post" th:if="${post != null}">
+  <li>
+    <p th:text="${post.body}"></p>
+    <p th:text="${post.createdAt}"></p>
+  </li>
+</div>
+
+</body>
+</html>

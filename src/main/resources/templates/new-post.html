@@ -163,12 +163,10 @@ input[type="submit"]:hover {
   </div>
   <div class="form-container">
     <div class="form-inner">
-      <form action="#" th:action="@{/savePost}" th:object="${userPost}" method="post">
+      <form action="#" th:action="@{/savePost}"  method="post">
         <fieldset>
           <legend>Add Your Post</legend>
-          <input type="text"  th:field ="*{body}"  />
-          </br>
-          <input type="date"  th:field ="*{createdAt}"  />
+          <input type="text" name="body" required />
           </br>
           <input type="submit" value="add post">
         </fieldset>

@@ -116,4 +116,12 @@ public class ApplicationUser implements UserDetails {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public List<Post> getApplicationUserList() {
+        return applicationUserList;
+    }
+
+    public void setApplicationUserList(List<Post> applicationUserList) {
+        this.applicationUserList = applicationUserList;
+    }
 }
