@@ -104,5 +104,7 @@
 <a th:if="${applicationUser}" th:href="@{/user/{id}(id=${applicationUser.id})}" class="button">Edit</a>
 <a th:if="${applicationUser}" th:href="@{/addNew-Post}" class="button">Add Post</a>
 <a th:if="${applicationUser}" href="/perform_logout" class="button">Log Out</a>
+<a th:if="${applicationUser}" href="/" class="button">Home</a>
+
 </body>
 </html>

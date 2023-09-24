@@ -46,6 +46,10 @@ public class ApplicationUserController {
 
     @GetMapping("/")
     public String getHomePage(Principal p, Model m) {
+        if (p != null) {
+         List<ApplicationUser> applicationUser = applicationUserRepository.findAll();
+            m.addAttribute("applicationUser", applicationUser);
+        }
         return "home.html";
     }
 
