@@ -3,6 +3,7 @@ package com.example.CodeFellowship.models;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Optional;
+import java.util.Set;
 
 @Entity
 @Table(name = "post")
@@ -15,17 +16,8 @@ public class Post {
     private LocalDate createdAt;
 
     @ManyToOne
-    @JoinColumn(name = "application_user_id" , nullable = false)
+    @JoinColumn(name = "applicationUser_id" , nullable = false)
     private ApplicationUser applicationUser;
-
-    public Post() {
-    }
-
-    public Post(String body, LocalDate createdAt, ApplicationUser applicationUser) {
-        this.body = body;
-        this.createdAt = createdAt;
-        this.applicationUser = applicationUser;
-    }
 
     public Long getId() {
         return id;
@@ -58,4 +50,5 @@ public class Post {
     public void setApplicationUser(ApplicationUser applicationUser) {
         this.applicationUser = applicationUser;
     }
+
 }

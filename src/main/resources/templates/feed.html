@@ -7,31 +7,22 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Application</title>
     <style>
-/* Your existing CSS styles (unchanged) */
 
-/* Style the button container */
-.button-container {
-    text-align: center; /* Center-align the buttons */
-    margin: 20px 0; /* Adjust top margin as needed */
-}
-
-/* Style the buttons */
 .button {
-    display: inline-block;
-    background-color: #fa4299;
-    color: #fff;
-    text-decoration: none;
-    padding: 10px 20px;
-    margin: 10px;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-}
+            display: inline-block;
+            background-color: #fa4299;
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            margin: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
 
-/* Style the buttons on hover */
-.button:hover {
-    background-color: #d81b60;
-}
-
+        /* Style links as buttons on hover */
+        .button:hover {
+            background-color: #d81b60;
+        }
 
 .card {
     border: 1px solid #ccc;
@@ -118,26 +109,30 @@ html,body{
 </head>
 <body>
 <div class="button-container">
-    <a href="/login" class="button">Log In</a>
-    <a href="/signup" class="button">Sign Up</a>
-    <a href="/perform_logout" class="button">Log Out</a>
-    <a href="/feed" class="button">Feed</a>
-    <a href="/my-profile" class="button">My Profile</a>
+    <a th:if="${applicationUser}" href="/login" class="button">Log In</a>
+    <a th:if="${applicationUser}" href="/signup" class="button">Sign Up</a>
+    <a th:if="!${applicationUser}" href="/perform_logout" class="button">Log Out</a>
+    <a th:if="!${applicationUser}" href="/my-profile" class="button">My Profile</a>
+    <a th:if="!${applicationUser}" href="/" class="button">Home</a>
 </div>
 <h1>Welcome to Application</h1>
+<p> Here is Where You Can find All Posts</p>
 <div class="card-container">
-    <!-- User Cards -->
-    <div th:each="user : ${applicationUser}" class="card">
+
+    <div th:each = "user : ${followedUser}" class="card">
         <div class="card-header">
             <h5 th:text="${user.firstName + ' ' + user.lastName}"></h5>
         </div>
-        <div class="card-body">
-            <a th:href="@{/userProfile/{userId}(userId=${user.id})}" class="btn btn-primary">Profile</a>
+        <div th:each = "post : ${user.posts}" th:if="${user.posts != null}">
+            <li>
+                <p th:text="${post.body}"></p>
+                <p th:text="${post.createdAt}"></p>
+            </li>
+        </div>
+        <div class="card-footer">
+            <a th:href="@{/userProfile/{userId}(userId=${user.id})}" class="button">View Profile</a>
         </div>
     </div>
-
-    <!-- Navigation Links -->
-
 </div>
 </body>
 </html>

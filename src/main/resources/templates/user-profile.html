@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Application</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap">
+  <style>
+        /* Reset default styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Global styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: -webkit-linear-gradient(left, #a445b2, #fa4299);
+            color: #fff;
+            text-align: center;
+        }
+
+        /* Header styles */
+        h1 {
+            font-size: 24px;
+            margin-top: 20px;
+        }
+
+        /* User info styles */
+        h3 {
+            background-color: #d46f96;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        /* User info span styles */
+        h3 span {
+            display: block;
+            margin: 5px 0;
+            font-size: 16px;
+        }
+
+        h3 span::before {
+            content: attr(th:text);
+            font-weight: bold;
+            color: black;
+        }
+
+        h3 span::after {
+            content: attr(th:text);
+            font-weight: normal;
+            color: black;
+        }
+
+        /* Post list styles */
+        h1 + ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            margin-top: 20px;
+        }
+
+        h2 {
+            font-size: 20px;
+        }
+
+        /* Button styles */
+        .button {
+            display: inline-block;
+            background-color: #fa4299;
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            margin: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .button:hover {
+            background-color: #d81b60;
+        }
+    </style>
+</head>
+<body>
+<h1>The user information</h1>
+<!-- Include user-info-fragment for displaying user information -->
+<div  th:if="${applicationUser != null}">
+  <h3>
+    <span th:text="${'Current user: ' + applicationUser.username }"></span>
+    <span th:text="${'First Name: ' + applicationUser.firstName }"></span>
+    <span th:text="${'Last Name: ' + applicationUser.lastName }"></span>
+    <span th:text="${'Date of Birth: ' + applicationUser.dateOfBirth }"></span>
+    <span th:text="${'Bio : ' + applicationUser.bio }"></span>
+  </h3>
+</div>
+
+<h1>Post List</h1>
+<ul>
+  <!-- Include post fragments within a loop -->
+  <li th:each="post : ${posts}" th:include="fragments/post-fragment :: post"></li>
+</ul>
+<!--<ul>-->
+<!--  &lt;!&ndash; Include post fragments within a loop &ndash;&gt;-->
+<!--  <li th:each="post : ${posts}" th:include="fragments/post-fragment :: post"></li>-->
+<!--</ul>-->
+
+<a th:if="!${isFollowed}" th:href="@{/follow/{userId}(userId=${applicationUser.id})}" class="button">Follow</a>
+<a th:if="${isFollowed}" class="button">Followed</a>
+
+<a th:if="${applicationUser}" href="/perform_logout" class="button">Log Out</a>
+<a th:if="${applicationUser}" href="/" class="button">Home</a>
+
+</body>
+</html>

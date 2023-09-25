@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Collection;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 public class ApplicationUser implements UserDetails {
@@ -21,25 +21,30 @@ public class ApplicationUser implements UserDetails {
     private LocalDate dateOfBirth;
     private String bio;
 
-    @OneToMany(mappedBy = "applicationUser" , cascade = CascadeType.ALL)
-    private List<Post> applicationUserList;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "applicationUser_follow",
+            joinColumns = {
+                 @JoinColumn(name = "follower_id" )
+            } ,
+            inverseJoinColumns = {
+                @JoinColumn(name = "followed_id" )
+            }
+    )
+    private Set<ApplicationUser> follow;
 
-    public ApplicationUser() {
-    }
 
-    public ApplicationUser(String username, String password, String firstName, String lastName, LocalDate dateOfBirth, String bio) {
-        this.username = username;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.dateOfBirth = dateOfBirth;
-        this.bio = bio;
-    }
+    @OneToMany(mappedBy = "applicationUser" , fetch = FetchType.LAZY)
+    private Set<Post> posts;
 
     public Long getId() {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    @Override
     public String getUsername() {
         return username;
     }
@@ -73,6 +78,7 @@ public class ApplicationUser implements UserDetails {
         return null;
     }
 
+    @Override
     public String getPassword() {
         return password;
     }
@@ -113,15 +119,19 @@ public class ApplicationUser implements UserDetails {
         this.bio = bio;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public Set<ApplicationUser> getFollow() {
+        return follow;
     }
 
-    public List<Post> getApplicationUserList() {
-        return applicationUserList;
+    public void setFollow(Set<ApplicationUser> follow) {
+        this.follow = follow;
     }
 
-    public void setApplicationUserList(List<Post> applicationUserList) {
-        this.applicationUserList = applicationUserList;
+    public Set<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(Set<Post> posts) {
+        this.posts = posts;
     }
 }
