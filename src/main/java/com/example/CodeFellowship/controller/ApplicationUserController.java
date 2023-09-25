@@ -20,6 +20,7 @@ import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Controller
 public class ApplicationUserController {
@@ -47,7 +48,8 @@ public class ApplicationUserController {
     @GetMapping("/")
     public String getHomePage(Principal p, Model m) {
         if (p != null) {
-         List<ApplicationUser> applicationUser = applicationUserRepository.findAll();
+            String username = p.getName();
+         List<ApplicationUser> applicationUser = applicationUserRepository.findByUsernameNot(username);
             m.addAttribute("applicationUser", applicationUser);
         }
         return "home.html";
@@ -60,8 +62,13 @@ public class ApplicationUserController {
                                    String bio) {
         try {
             String encryptedPassword = passwordEncoder.encode(password);
-            ApplicationUser applicationUser = new ApplicationUser(username, encryptedPassword, firstName, lastName, dateOfBirth, bio);
-
+            ApplicationUser applicationUser = new ApplicationUser();
+            applicationUser.setUsername(username);
+            applicationUser.setPassword(encryptedPassword);
+            applicationUser.setFirstName(firstName);
+            applicationUser.setLastName(lastName);
+            applicationUser.setDateOfBirth(dateOfBirth);
+            applicationUser.setBio(bio);
             applicationUserRepository.save(applicationUser);
 
             authWithHttpServletRequest(username, password);
@@ -77,13 +84,13 @@ public class ApplicationUserController {
         return new RedirectView("/");
     }
 
-    @GetMapping("/myprofile")
+    @GetMapping("/my-profile")
     public String getUserProfile(Model model, Principal p)  {
 
         if (p != null) {
             String username = p.getName();
             ApplicationUser applicationUser = applicationUserRepository.findByUsername(username);
-            List<Post> posts = applicationUser.getApplicationUserList();
+            Set<Post> posts = applicationUser.getPosts();
             model.addAttribute("applicationUser", applicationUser);
             model.addAttribute("posts" , posts);
         }
@@ -91,7 +98,7 @@ public class ApplicationUserController {
     }
 
     @GetMapping("/user/{id}")
-    public String editUserInfo_Mapping_Obj(Model m , @PathVariable(value = "id") Long id) {
+    public String getUserInfo(Model m , @PathVariable(value = "id") Long id) {
         Optional<ApplicationUser> applicationUser = applicationUserRepository.findById(id);
 
         m.addAttribute("applicationUser" , applicationUser.get());
@@ -99,7 +106,7 @@ public class ApplicationUserController {
     }
 
     @PostMapping("/users")
-    public RedirectView editUserInfo(@ModelAttribute("user") ApplicationUser applicationUser ,
+    public RedirectView editUser(@ModelAttribute("user") ApplicationUser applicationUser ,
                                      Principal p , RedirectAttributes redirectAttributes){
         if ((p != null) &&
                 (p.getName().equals(applicationUser.getUsername()))) {
@@ -109,7 +116,54 @@ public class ApplicationUserController {
             return new RedirectView("/user/" +applicationUser.getId());
         }
 
-        return new RedirectView("/myprofile");
+        return new RedirectView("/my-profile");
+    }
+
+    @GetMapping("/follow/{userId}")
+    public RedirectView followUser(Model m,Principal p, @PathVariable(value = "userId") Long userId){
+        if (p != null){
+            String username = p.getName();
+            ApplicationUser myApplicationUser = applicationUserRepository.findByUsername(username);
+            ApplicationUser followedApplicationUser = applicationUserRepository.findById(userId).orElseThrow();
+            myApplicationUser.getFollow().add(followedApplicationUser);
+            applicationUserRepository.save(myApplicationUser);
+        }
+        return new RedirectView("/userProfile/" + userId);
+    }
+
+    @GetMapping("/userProfile/{userId}")
+    public String getUserProfile(Model m , Principal p , @PathVariable(value = "userId") Long userId){
+        if (p != null){
+            String username = p.getName();
+            ApplicationUser myApplicationUser = applicationUserRepository.findByUsername(username);
+            ApplicationUser applicationUser = applicationUserRepository.findById(userId).orElseThrow();
+
+            boolean isFollowed = myApplicationUser.getFollow().stream().anyMatch(user -> user.getId() == userId) ;
+
+            Set<Post> posts = applicationUser.getPosts();
+            m.addAttribute("applicationUser" , applicationUser);
+            m.addAttribute("posts" , posts);
+            m.addAttribute("isFollowed" , isFollowed);
+        }
+        return "user-profile.html";
+    }
+
+    @GetMapping("/feed")
+    public String getFeedPage(Principal p , Model m){
+        if (p != null){
+            String username = p.getName();
+            ApplicationUser myApplicationUser = applicationUserRepository.findByUsername(username);
+            Set<ApplicationUser> followedUser = myApplicationUser.getFollow();
+            m.addAttribute("followedUser" , followedUser);
+        }
+        return "feed.html";
+    }
+
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    public class ResourceNotFoundException extends RuntimeException{
+        ResourceNotFoundException(String message){
+            super(message);
+        }
     }
 
     public void authWithHttpServletRequest(String username, String password) {
@@ -118,12 +172,6 @@ public class ApplicationUserController {
             request.login(username, password);
         } catch (ServletException e) {
             e.printStackTrace();
-        }
-    }
-    @ResponseStatus(value = HttpStatus.NOT_FOUND)
-    public class ResourceNotFoundException extends RuntimeException{
-        ResourceNotFoundException(String message){
-            super(message);
         }
     }
 }

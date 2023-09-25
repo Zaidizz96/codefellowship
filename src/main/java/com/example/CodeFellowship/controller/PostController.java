@@ -30,10 +30,16 @@ public class PostController {
         if (p != null) {
             String username = p.getName();
             ApplicationUser applicationUser = applicationUserRepository.findByUsername(username);
+
             LocalDate createdAt = LocalDate.now();
-            Post post = new Post(body , createdAt , applicationUser );
-            postRepository.save(post);
+            Post posts = new Post();
+
+            posts.setBody(body);
+            posts.setCreatedAt(createdAt);
+            posts.setApplicationUser(applicationUser);
+
+            postRepository.save(posts);
         }
-    return new RedirectView("/myprofile");
+    return new RedirectView("/my-profile");
     }
 }

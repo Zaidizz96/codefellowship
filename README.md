@@ -25,9 +25,12 @@ CodeFellowship is an application allows users to create accounts, log in, and co
 - Display of the user's username when logged in.
 - Logout functionality.
 - ability of the authenticated user to create thiere own posts , in addition to ability to edit theire own user information .
-- any 404 not found error will be successfully appear to the user 
+- any 404 not found error will be successfully appear to the user
+- User Following: Users can follow other users. Following a user allows their posts to show up in the logged-in user's feed, where they can see what all of their followed users have posted recently.
+- feeds page whaere you can see all followed user posts 
 - Stylish and attractive design.
 - Use of templates for rendering pages.
+- 
 
 ## Getting Started
 
@@ -58,3 +61,4 @@ CodeFellowship is an application allows users to create accounts, log in, and co
 7. if you logged in to the page , your user information and your previously added posts from you will appear in you profile page.
 8. you can add your posts and edit your user information
 8. do not try to edit other user information , because that is will cause error.
+9. by going to viewed users profile pages , you can follow them by cklick on `follow` that allow you to see their posts in feed page 
